@@ -54,6 +54,8 @@ public class HumanPlayer extends Player {
 			OK = true;
 			try {
 				C = (char) System.in.read();
+				if( C>='A' && C<='Z' )
+					C = Character.toLowerCase(C);
 			}catch (java.io.IOException e) {
 
 				OK = false;
