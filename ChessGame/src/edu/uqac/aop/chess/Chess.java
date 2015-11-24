@@ -33,7 +33,7 @@ public class Chess {
 			board.print();
 			hp.makeMove();
 			board.print();
-			ap.makeMove();				
+			ap.makeMove();
 		}
 	}
 	

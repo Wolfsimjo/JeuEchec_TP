@@ -11,6 +11,7 @@ public abstract class Player {
 
 	public abstract boolean makeMove(Move mv);
 	public abstract Move makeMove();
+	public abstract Board getBoard();
 	
 	public int getColor(){
 		return this.Colour;
