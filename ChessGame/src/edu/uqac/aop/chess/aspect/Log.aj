@@ -1,4 +1,4 @@
-package edu.uqac.aop.aspect;
+package edu.uqac.aop.chess.aspect;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -38,7 +38,7 @@ public aspect Log {
 
 		File f = new File ("Log_mouvement");
 		try{
-		    PrintWriter pw = new PrintWriter (new BufferedWriter (new FileWriter (f)));
+		    PrintWriter pw = new PrintWriter (new BufferedWriter (new FileWriter (f,true)));
 		    pw.print(dateExec+" ");
 		    pw.print(player+" ");
 		    pw.println (mouvement);

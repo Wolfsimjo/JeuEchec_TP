@@ -1,4 +1,4 @@
-package edu.uqac.aop.aspect;
+package edu.uqac.aop.chess.aspect;
 
 import edu.uqac.aop.chess.Board;
 import edu.uqac.aop.chess.Spot;
@@ -22,9 +22,9 @@ public aspect Aspect_Piece {
 
 		if (pi instanceof Pawn) { // pion
 			int dir = -1 * (int) Math.pow(-1, p.getColor()); 
-			// on récupère la direction du pion
+			// on recupere la direction du pion
 			if (mv.xI != mv.xF) { 
-				// si on se déplace sur le coté
+				// si on se deplace sur le cote
 				if (mv.xI != mv.xF + 1 && mv.xI != mv.xF - 1) { 
 					// si le mouvement n'est pas sur une case adjacente
 					return false;
@@ -38,20 +38,20 @@ public aspect Aspect_Piece {
 					return false;
 				}
 			} else { 
-				// si on se déplace en ligne droite
+				// si on se deplace en ligne droite
 				if (mv.yI != Math.floorMod(dir, 7)) { 
-					// si le déplacement n'est pas le premier
+					// si le deplacement n'est pas le premier
 					if (mv.yI + dir != mv.yF || end.isOccupied()) { 
-						// si le déplacement n'est pas la case en face
+						// si le deplacement n'est pas la case en face
 						return false;
 					}
-				} else { // si c'est le premier déplacement
+				} else { // si c'est le premier deplacement
 					if ((mv.yI + dir != mv.yF) && (mv.yI + 2 * dir != mv.yF)) { 
-						// si le déplacement n'est pas de 1 ou 2 cases
+						// si le deplacement n'est pas de 1 ou 2 cases
 						return false;
 					}
 					if (mv.yI + 2 * dir == mv.yF && (grid[mv.xF][mv.yI+dir].isOccupied() || end.isOccupied())) { 
-						// si le déplacement est de 2 cases et qu'il y a un obstacle
+						// si le deplacement est de 2 cases et qu'il y a un obstacle
 						return false;
 					}
 					
@@ -102,8 +102,22 @@ public aspect Aspect_Piece {
 			}
 
 		} else if (pi instanceof Bishop) { // fou
+			int dirX =mv.xF-mv.xI, dirY = mv.yF-mv.yI;
+			
+			if(!(Math.abs(dirX)==Math.abs(dirY))){ //deplacement en diagonale
+				return false;
+			}
+			else{				
+				
+			}
 
 		} else if (pi instanceof Queen) { // reine
+			if(!(Math.abs(mv.xF-mv.xI)==Math.abs(mv.yF-mv.yI))){ //deplacement en diagonale
+				return false;
+			}
+			else{
+				
+			}
 
 		} else { // roi
 			if (mv.yI != mv.yF + 1 && mv.yI != mv.yF - 1 && mv.xI != mv.xF + 1 && mv.xI != mv.xF - 1) {
@@ -117,7 +131,7 @@ public aspect Aspect_Piece {
 		if (end.getPiece().getPlayer() == p.getColor()) { // Case
 															// finale
 			// contient une
-			// piece alliée
+			// piece alliee
 			return false;
 		}
 
