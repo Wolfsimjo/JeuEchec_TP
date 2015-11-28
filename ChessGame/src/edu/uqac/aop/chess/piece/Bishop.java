@@ -15,7 +15,7 @@ public class Bishop extends Piece {
 
 	@Override
 	public String toString() {
-		return ((this.player == Player.WHITE) ? "P" : "p");
+		return ((this.player == Player.WHITE) ? "F" : "f");
 	}
 
 	@Override

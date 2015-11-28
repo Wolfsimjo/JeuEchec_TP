@@ -15,7 +15,8 @@ public aspect Aspect_Piece {
 		// Spot initial = board.getGrid()[mv.xI][mv.yI];
 		Spot[][] grid = board.getGrid();
 		Spot end = grid[mv.xF][mv.yF];
-
+		int dirX =mv.xF-mv.xI, dirY = mv.yF-mv.yI;
+		
 		if (mv.xI == mv.xF && mv.yI == mv.yF) {
 			return false;
 		}
@@ -71,52 +72,27 @@ public aspect Aspect_Piece {
 				return false;
 			}
 		} else if (pi instanceof Rook) { // tour
-			if (mv.xI == mv.xF) {
-				int i = mv.yI;
-				int dir = 1;
-				if (mv.yF < mv.yI) {
-					dir = -1;
-				}
-				while (i != mv.yF) {
-					i += dir;
-					if (grid[mv.xI][i].isOccupied()) {
-						return false;
-					}
-				}
-			}
-			else if (mv.yI == mv.yF) {
-				int i = mv.xI;
-				int dir = 1;
-				if (mv.xF < mv.xI) {
-					dir = -1;
-				}
-				while (i != mv.xF - dir) {
-					i += dir;
-					if (grid[i][mv.yI].isOccupied()) {
-						return false;
-					}
-				}
-			}
-			else {
+			if(!((mv.xI==mv.xF)||(mv.yI==mv.yF))){
 				return false;
+			}
+			else{
+				return !isPathOccuped(mv, dirX, dirY, grid, p);
 			}
 
 		} else if (pi instanceof Bishop) { // fou
-			int dirX =mv.xF-mv.xI, dirY = mv.yF-mv.yI;
-			
 			if(!(Math.abs(dirX)==Math.abs(dirY))){ //deplacement en diagonale
 				return false;
 			}
 			else{				
-				
+				return !isPathOccuped(mv, dirX, dirY, grid, p);
 			}
-
-		} else if (pi instanceof Queen) { // reine
-			if(!(Math.abs(mv.xF-mv.xI)==Math.abs(mv.yF-mv.yI))){ //deplacement en diagonale
+		} 
+		else if (pi instanceof Queen) { // reine
+			if(!((Math.abs(dirX)==Math.abs(dirY))||(mv.xI==mv.xF)||(mv.yI==mv.yF))){ //deplacement en diagonale
 				return false;
 			}
 			else{
-				
+				return !isPathOccuped(mv, dirX, dirY, grid, p);
 			}
 
 		} else { // roi
@@ -134,7 +110,26 @@ public aspect Aspect_Piece {
 			// piece alliee
 			return false;
 		}
-
 		return true;
+	}
+	
+	public boolean isPathOccuped(Move mv, int dirX, int dirY, Spot[][] grid,Player player){
+		int newX = mv.xI ,newY = mv.yI;
+		for(int iBcl = 1; iBcl <= Math.max(Math.abs(dirX), Math.abs(dirY));iBcl++)
+		{
+			newX = mv.xI+(iBcl*(int)Math.signum(dirX));
+			newY = mv.yI+(iBcl*(int)Math.signum(dirY));
+			if(grid[newX][newY].isOccupied()){
+				if(newX == mv.xF&&newY ==mv.yF){
+					if(grid[newX][newY].getPiece().getPlayer() == player.getColor()){
+						return true;
+					}
+				}
+				else{
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }
