@@ -11,9 +11,9 @@ import java.util.Date;
 import edu.uqac.aop.chess.agent.*;
 
 public aspect Log {
-	pointcut log(Move mv,Player p): call(boolean *.makeMove(Move))&&args(mv)&&target(p);
+	pointcut log(Player p): call(Move Player.makeMove())&&target(p);
 	
-	after(Move mv,Player p) : log(mv,p) 
+	after(Player p) returning( Move mv) : log(p) 
 	{
 		Date aujourdhui = new Date();
 		DateFormat mediumDateFormat = DateFormat.getDateTimeInstance(

@@ -65,10 +65,10 @@ public aspect Aspect_Piece {
 			}
 
 		} else if (pi instanceof Knight) { // cavalier
-			if ((mv.xF == mv.xI + 1 || mv.xF == mv.xI - 1) && (mv.yF != mv.yI + 2 && mv.yF != mv.yI -2)) {
+			if (!((mv.xF == mv.xI + 1 || mv.xF == mv.xI - 1) && (mv.yF == mv.yI + 2 || mv.yF == mv.yI -2))) {
 				return false;
 			}
-			if ((mv.yF == mv.yI + 1 || mv.yF == mv.yI - 1) && (mv.xF != mv.xI + 2 && mv.xF != mv.xI -2)) {
+			else if (!((mv.yF == mv.yI + 1 || mv.yF == mv.yI - 1) && (mv.xF == mv.xI + 2 || mv.xF == mv.xI -2))) {
 				return false;
 			}
 		} else if (pi instanceof Rook) { // tour
@@ -96,19 +96,16 @@ public aspect Aspect_Piece {
 			}
 
 		} else { // roi
-			if (mv.yI != mv.yF + 1 && mv.yI != mv.yF - 1 && mv.xI != mv.xF + 1 && mv.xI != mv.xF - 1) {
+			if(!((mv.xI == mv.xF || mv.xF == mv.xI+1 || mv.xI == mv.xI-1) && (mv.yF == mv.yI-1 || mv.yF == mv.yI+1))){
+				return false;
+			}
+			else if(!(mv.yF == mv.yI && (mv.xF == mv.xI+1 || mv.xF == mv.xI-1))){
 				return false;
 			}
 		}
 
-		if (!end.isOccupied()) {
-			return true;
-		}
-		if (end.getPiece().getPlayer() == p.getColor()) { // Case
-															// finale
-			// contient une
-			// piece alliee
-			return false;
+		if (end.isOccupied() && end.getPiece().getPlayer() == p.getColor()) {//Si la case finale est occupe par une piece
+			return false;													//allie
 		}
 		return true;
 	}
