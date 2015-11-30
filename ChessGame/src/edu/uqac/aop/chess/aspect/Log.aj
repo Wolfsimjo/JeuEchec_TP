@@ -9,6 +9,7 @@ import java.text.DateFormat;
 import java.util.Date;
 
 import edu.uqac.aop.chess.agent.*;
+import edu.uqac.aop.chess.*;
 
 public aspect Log {
 	pointcut log(Player p): call(Move Player.makeMove())&&target(p);
@@ -42,6 +43,32 @@ public aspect Log {
 		    pw.print(dateExec+" ");
 		    pw.print(player+" ");
 		    pw.println (mouvement);
+		    pw.close();
+		}
+		catch (IOException exception){
+		    System.out.println ("Erreur lors de la lecture : " + exception.getMessage());
+		}
+	}
+	
+	pointcut first_game_log(): call(* Chess.play());
+	
+	before () : first_game_log(){
+		Date aujourdhui = new Date();
+		DateFormat mediumDateFormat = DateFormat.getDateTimeInstance(
+		DateFormat.MEDIUM,
+		DateFormat.MEDIUM);
+		
+		String dateExec;
+		dateExec = mediumDateFormat.format(aujourdhui);		
+		
+		File f = new File ("Log_mouvement");
+		try{
+		    PrintWriter pw = new PrintWriter (new BufferedWriter (new FileWriter (f,true)));
+		    pw.print("=====================");
+		    pw.println ();
+		    pw.print("Debut de la partie le ");
+		    pw.print(dateExec +" ");
+		    pw.println ();
 		    pw.close();
 		}
 		catch (IOException exception){
